@@ -6,7 +6,7 @@ https://github.com/DataSharing/simple-installeur-php/blob/master/installation.pn
 
 -Une fois valider, l'installeur va créer:
 --./config
----database.php
+---database.php  
 ----$database['prefixebdd'] = "prefixe_";
 ----$database['hostname'] = "localhost";
 ----$database['namebdd'] = "mybdd";
