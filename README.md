@@ -2,7 +2,7 @@
 - Coller le dossier "installation" à la racine de votre site.
 - Dans le fichier "index.php" de votre site, faire une vérification de l'existance du dosser "installation"
 - Si le dossier existe, alors on fait une redirection sur "installation/index.php"   
-- if(file_exists(dirname(__FILE__).'/../installation/install.php')){  
+- if(file_exists(dirname(__FILE__).'/installation/install.php')){  
 			header('location:installation/index.php');  
 		}    
 ![alt tag](https://github.com/DataSharing/simple-installeur-php/blob/master/installation.png)  
