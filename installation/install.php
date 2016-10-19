@@ -35,9 +35,12 @@ class Install {
 				die('Echec lors de la création des répertoires...');
 			}
 		}
+		if(!$prefixebdd == ""){
+			$prefixebdd = $prefixebdd."_";
+		}
 		$config = fopen('../config/database.php','w+');
                 fputs($config, "<?php".PHP_EOL);
-                fputs($config, '$database["prefixebdd"]= "'.$prefixebdd.'_";'.PHP_EOL);
+                fputs($config, '$database["prefixebdd"]= "'.$prefixebdd.'";'.PHP_EOL);
 		fputs($config, '$database["hostname"]= "'.$hostname.'";'.PHP_EOL);
                 fputs($config, '$database["namebdd"]= "'.$namebdd.'";'.PHP_EOL);
                 fputs($config, '$database["userbdd"]= "'.$userbdd.'";'.PHP_EOL);
@@ -143,7 +146,7 @@ class Install {
         
         function supprimer_rep_install(){
             $ex_url = explode('/', $_SERVER['REQUEST_URI']);
-            $dir = $_SERVER["DOCUMENT_ROOT"].$ex_url[1]."/".$ex_url[2];
+            $dir = $_SERVER["DOCUMENT_ROOT"]."/".$ex_url[1]."/".$ex_url[2];
             if($this->deleteDir($dir)){
                header('location:../index.php');
             }
