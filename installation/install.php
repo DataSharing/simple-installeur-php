@@ -57,6 +57,7 @@ class Install {
 				fputs($config, '$config["controller_principal"]= "Accueil";'.PHP_EOL);
                 fputs($config, '$config["base_url"]= "'.$base_url.'/";'.PHP_EOL);
 				fputs($config, '$config["langage"] = "fr-FR";'.PHP_EOL);
+				fputs($config, '$config["rewrite"] = "off";'.PHP_EOL);
 		fclose($config);
 		return true;
 	}
