@@ -75,7 +75,7 @@ class Install {
 							  `telephone` VARCHAR(10) NULL COMMENT '',
 							  `ville` VARCHAR(150) NULL COMMENT '',
 							  `mail` VARCHAR(150) NULL COMMENT '',
-							  `acces` VARCHAR(20) NOT NULL,
+							  `acces` VARCHAR(20) NULL DEFAULT '',
 							  `password` VARCHAR(255) NULL COMMENT '',
 							  `salage` VARCHAR(255) NULL COMMENT '',
 							  `date_creation` DATE NULL COMMENT '',
@@ -93,7 +93,7 @@ class Install {
 									  `action` varchar(255) DEFAULT NULL,
 									  `id_utilisateur` INT(11) NOT NULL,
 									  PRIMARY KEY (`id`))';
-            $create_user = 'insert into '.$prefixe.'utilisateurs(nom,prenom,mail,password) values("Super","Admin","'.$mail.'","'.sha1($password).'")';
+            $create_user = 'insert into '.$prefixe.'utilisateurs(nom,prenom,mail,password,acces) values("Super","Admin","'.$mail.'","'.sha1($password).'","admin")';
             if($this->db->query($create_table) && $this->db->query($create_user) && $this->db->query($create_table_logs)){
                 return true;
             }
