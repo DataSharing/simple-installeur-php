@@ -1,32 +1,35 @@
 ﻿ <?php
 
+include "tables.php";
+
 class Install {
-        protected $db;
+
+    protected $db;
 	public $msgerror;
-        public $msgsucces;
+    public $msgsucces;
         
 	function index($prefixebdd = NULL,$hostname,$namebdd,$userbdd,$pwdbdd,$mail,$base_url,$nom_du_site,$password,$passwordconfirme){
-            if($password == $passwordconfirme){
-		if($this->TestConnection($hostname,$namebdd,$userbdd,$pwdbdd)){
-                    if($this->CreateTableAndUser($mail,$password,$prefixebdd)){
-			if($this->CreateFileDatabase($prefixebdd,$hostname,$namebdd,$userbdd,$pwdbdd)){
-                            if($this->CreateFileConfigs($base_url,$nom_du_site)){
-                                header('location:?code=0');
-                            }else{
-                                return 'Le fichier de configuration n\'a pas été créé, veuillez vérifier les droits sur le repertoire ! (fichier : config.php)';
-                            }	
+        if($password == $passwordconfirme){
+			if($this->TestConnection($hostname,$namebdd,$userbdd,$pwdbdd)){
+	            if($this->CreateTableAndUser($mail,$password,$prefixebdd)){
+					if($this->CreateFileDatabase($prefixebdd,$hostname,$namebdd,$userbdd,$pwdbdd)){
+	                    if($this->CreateFileConfigs($base_url,$nom_du_site)){
+	                        header('location:?code=0');
+	                    }else{
+	                        return 'Le fichier de configuration n\'a pas été créé, veuillez vérifier les droits sur le repertoire ! (fichier : config.php)';
+	                    }	
+					}else{
+		            	return 'Le fichier de configuration n\'a pas été créé, veuillez vérifier les droits sur le repertoire ! (fichier : database.php)';
+					}
+		         }else{
+		             return 'Erreur à la création de l\'utilisateur!';
+		         }                       
 			}else{
-                            return 'Le fichier de configuration n\'a pas été créé, veuillez vérifier les droits sur le repertoire ! (fichier : database.php)';
+	            return $this->msgerror;
 			}
-                     }else{
-                         return 'Erreur à la création de l\'utilisateur!';
-                     }                       
-		}else{
-                    return $this->msgerror;
-		}
-            }else{
-                return 'Vous avez fait une erreur à la saisie du mot de passe de confirmation!';
-            }
+        }else{
+            return 'Vous avez fait une erreur à la saisie du mot de passe de confirmation!';
+        }
 	}
 	
 	function CreateFileDatabase($prefixebdd = NULL,$hostname,$namebdd,$userbdd,$pwdbdd){
@@ -49,7 +52,7 @@ class Install {
 		return true;
 	}
         
-        function CreateFileConfigs($base_url,$nom_du_site){
+    function CreateFileConfigs($base_url,$nom_du_site){
 		$config = fopen('../config/config.php','w+');
                 fputs($config, "<?php".PHP_EOL);
 				fputs($config, '$config["date_du_jour"]= date("Y-m-d H:i:s");'.PHP_EOL);
@@ -62,43 +65,18 @@ class Install {
 		return true;
 	}
 	
-        function CreateTableAndUser($mail,$password,$prefixebdd = NULL){
-			if(!$prefixebdd == NULL){
-				$prefixe = $prefixebdd."_";
-			}else{
-				$prefixe = "";
-			}
+    function CreateTableAndUser($mail,$password,$prefixebdd = NULL){
+		if(!$prefixebdd == NULL){
+			$prefixe = $prefixebdd."_";
+		}else{
+			$prefixe = "";
+		}
 
-            $create_table = "CREATE TABLE IF NOT EXISTS `" . $prefixe . "utilisateurs` (
-                              `id` INT NOT NULL AUTO_INCREMENT COMMENT '',
-							  `nom` VARCHAR(50) NULL COMMENT '',
-							  `prenom` VARCHAR(50) NULL COMMENT '',
-							  `telephone` VARCHAR(10) NULL COMMENT '',
-							  `ville` VARCHAR(150) NULL COMMENT '',
-							  `mail` VARCHAR(150) NULL COMMENT '',
-							  `acces` VARCHAR(20) NULL DEFAULT '',
-							  `password` VARCHAR(255) NULL COMMENT '',
-							  `salage` VARCHAR(255) NULL COMMENT '',
-							  `date_creation` DATE NULL COMMENT '',
-							  `active` INT(1) NULL DEFAULT '1',
-							  `corbeille` INT(1) NULL DEFAULT '0',
-							  PRIMARY KEY (`id`)  COMMENT '')
-							  ENGINE = InnoDB
-							  COMMENT = ''";
-			$create_table_logs = 'CREATE TABLE IF NOT EXISTS `' . $prefixe . 'logs` (
-									`id` int(11) NOT NULL AUTO_INCREMENT,
-									  `id_element` int(11) DEFAULT NULL,
-									  `controller` varchar(150) DEFAULT NULL,
-									  `modifie_par` varchar(150) DEFAULT NULL,
-									  `date_modification` datetime DEFAULT NULL,
-									  `action` varchar(255) DEFAULT NULL,
-									  `id_utilisateur` INT(11) NOT NULL,
-									  PRIMARY KEY (`id`))';
-            $create_user = 'insert into '.$prefixe.'utilisateurs(nom,prenom,mail,password,acces) values("Super","Admin","'.$mail.'","'.sha1($password).'","admin")';
-            if($this->db->query($create_table) && $this->db->query($create_user) && $this->db->query($create_table_logs)){
-                return true;
-            }
+        $create_user = 'insert into '.$prefixe.'utilisateurs(nom,prenom,mail,password,id_groupe) values("Super","Admin","'.$mail.'","'.sha1($password).'",1)';
+        if(Tables::creation($this->db,$prefixe) && $this->db->query($create_user)){
+            return true;
         }
+    }
         
 	function TestConnection($hostname,$namebdd,$userbdd,$pwdbdd){
 		$DB = NULL;
