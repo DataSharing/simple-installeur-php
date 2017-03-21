@@ -8,6 +8,7 @@
 ![alt tag](https://github.com/DataSharing/simple-installeur-php/blob/master/installation.png)  
 
 #Création des fichiers une fois validé
+
 --./config  
 ---database.php  
 ----$database['prefixebdd'] = "prefixe_";  
