@@ -3,8 +3,8 @@
 - Dans le fichier "index.php" de votre site, faire une vérification de l'existance du dosser "installation"
 - Si le dossier existe, alors on fait une redirection sur "installation/index.php"   
 - if(file_exists(dirname(__FILE__).'/installation/install.php')){  
-			header('location:installation/index.php');  
-		}    
+	header('location:installation/index.php');  
+  }    
 ![alt tag](https://github.com/DataSharing/simple-installeur-php/blob/master/installation.png)  
 
 #Création des fichiers une fois validé
@@ -21,3 +21,11 @@
 ---$config['controller_principal'] = "Accueil";  
 ---$config['base_url'] = "http://localhost/monsite/";  
 ---$config['langage'] = "fr-FR";  
+---$config['rewrite'] = "off";
+
+#Création des tables
+  - utilisateurs
+  - groupes
+  - logs
+  - droits
+  - droits_groupes (VIEW)
