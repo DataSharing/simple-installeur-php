@@ -78,7 +78,7 @@ Class Tables extends Install{
 		}
 
 		//Insertion groupe Administrateur
-		if(!$db->query('insert into groupes(nom,description,id_reference) values("Administrateurs","Groupe administrateur",1)')){
+		if(!$db->query('insert into ' . $prefixe . 'groupes(nom,description,id_reference) values("Administrateurs","Groupe administrateur",1)')){
 			return false;
 		}
 		//Inscription des droits
