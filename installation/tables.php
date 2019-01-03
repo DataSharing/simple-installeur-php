@@ -70,6 +70,19 @@ Class Tables extends Install{
 		//Création de vue droits_groupes
 		$tables[4] = "CREATE VIEW ".$prefixe."droits_groupes AS select `droits`.`id_groupe` AS `id_groupe`,`droits`.`controller` AS `controller`,group_concat(`droits`.`droit` order by `droits`.`droit` ASC separator '+') AS `droit` from `droits` group by `droits`.`controller`,`droits`.`id_groupe`";
 
+		//Création de la table 
+		$tables[5] = "CREATE TABLE ".$prefixe."`plugins` (
+		`id` INT(11) NOT NULL AUTO_INCREMENT,
+		`nom` VARCHAR(255) NOT NULL,
+		`is_activated` INT(1) NOT NULL DEFAULT '0',
+		PRIMARY KEY (`id`)
+		)
+		COLLATE='latin1_swedish_ci'
+		ENGINE=MyISAM
+		AUTO_INCREMENT=22
+		;
+		";
+		
  		//Création des tables;
 		foreach($tables as $table){
 			if(!$db->query($table)){
